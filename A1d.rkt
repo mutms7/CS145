@@ -3,6 +3,6 @@
 #reader(lib "htdp-beginner-reader.ss" "lang")((modname A1d) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #t () #f)))
 (define step-count-f 4)
 (define step-count-g 6)
-(define step-count-h (+ 5 (/ 500224 1000000)))
+(define step-count-h (+ 5 (/ 499777 1000000)))
 (define step-count-i 5.5)
 (define step-count-j 5.25)
