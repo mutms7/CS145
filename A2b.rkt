@@ -9,24 +9,24 @@
 
 
 (define (compare-steps-k n) (cond
-                              [(> (fib n) (step-count-k n) 'more)]
-                              [(= (fib n) (step-count-k n) 'same)]
-                              [(< (fib n) (step-count-k n) 'fewer)]
+                              [(> (fib-steps n) (step-count-k n)) 'more]
+                              [(= (fib-steps n) (step-count-k n)) 'same]
+                              [(< (fib-steps n) (step-count-k n)) 'fewer]
   ))
 (define (compare-steps-l n) (cond
-                              [(> (fib n) (step-count-l n) 'more)]
-                              [(= (fib n) (step-count-l n) 'same)]
-                              [(< (fib n) (step-count-l n) 'fewer)]
+                              [(> (fib-steps n) (step-count-l n)) 'more]
+                              [(= (fib-steps n) (step-count-l n)) 'same]
+                              [(< (fib-steps n) (step-count-l n)) 'fewer]
   ))
 (define (compare-steps-m n) (cond
-                              [(> (fib n) (step-count-m n) 'more)]
-                              [(= (fib n) (step-count-m n) 'same)]
-                              [(< (fib n) (step-count-m n) 'fewer)]
+                              [(> (fib-steps n) (step-count-m n)) 'more]
+                              [(= (fib-steps n) (step-count-m n)) 'same]
+                              [(< (fib-steps n) (step-count-m n)) 'fewer]
   ))
 (define (compare-steps-o n) (cond
-                              [(> (fib n) (step-count-o n) 'more)]
-                              [(= (fib n) (step-count-o n) 'same)]
-                              [(< (fib n) (step-count-o n) 'fewer)]
+                              [(> (fib-steps n) (step-count-o n)) 'more]
+                              [(= (fib-steps n) (step-count-o n)) 'same]
+                              [(< (fib-steps n) (step-count-o n)) 'fewer]
   ))
 
 (define (step-count-t n) (+ 4 (* n 5)))
