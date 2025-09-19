@@ -1,0 +1,20 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname A3b) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+(define-struct node (left right))
+
+
+;; a
+(check-expect (tree-similar? empty empty) true)
+(check-expect (tree-similar? (make-node 1 2) (make-node 2 1)) false)
+
+(define (tree-similar? t1 t2)
+  (cond
+    [(and (empty? t1) (empty? t2)) true]
+      [(or (empty? t1) (empty? t2)) false]
+      [else (and (tree-similar? (node-left t1) (node-left t2)) (tree-similar? (node-right t1) (node-right t2)))]
+            )
+  )
+
+(check-expect (tree-similar? (make-node (make-node 1 2) 2) (make-node (make-node 1 2) 2)) true)
+(check-expect (tree-similar? (make-node (make-node 1 2) 2) (make-node 1 2)) false)

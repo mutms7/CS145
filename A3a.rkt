@@ -1,0 +1,76 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname A3a) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+
+(define-struct thing (a b))
+   (define u (make-thing 1 2))
+   (define v (make-thing (make-thing (make-thing 1 2) (make-thing 3 4))  
+                         (make-thing (make-thing 5 6) (make-thing 7 8))))
+   (define w (make-thing 
+               (make-thing 
+                 (make-thing 
+                   (make-thing 
+                     (make-thing 
+                       (make-thing 
+                         (make-thing 1 2) 3) 4) 5) 6) 7) 8))
+
+
+;; u v w
+(check-expect (sum-thing u) 3)
+(check-expect (sum-thing v) 36)
+
+
+(define (sum-thing x)
+              (if (not (thing? x)) x
+              
+               (+ (sum-thing (thing-a x)) (sum-thing (thing-b x)))
+               
+              ))
+
+
+(check-expect (sum-thing w) 36)
+(check-expect (sum-thing (make-thing v w)) 72)
+
+;; x
+
+(check-expect (sum-thing (build-thing 1 10)) 55)
+(check-expect (sum-thing (build-thing 1 9)) 45)
+(check-expect (sum-thing (build-thing 1 8)) 36)
+(check-expect (sum-thing (build-thing 1 4)) 10)
+(check-expect (sum-thing (build-thing 3 5)) 12)
+
+
+
+(define (build-thing m n)
+  (if (<= (sub1 n) m)
+      (make-thing m n)
+      (make-thing (build-thing m (sub1 n)) n)
+      )
+  )
+
+(check-expect (thing-b (build-thing 1 8)) 8)
+(check-expect (sum-thing (build-thing 7 8)) 15)
+
+
+;; y
+
+(check-expect (sum-thing (build-thing-or-number 1)) 1)
+(check-expect (sum-thing (build-thing-or-number 16)) 136)
+
+
+(define (build-thing-or-number n) (if (= n 1) 1 (btonhelp 1 n)))
+
+(define (btonhelp start end)
+  (if (= start (sub1 end))
+      (make-thing start end)
+      (make-thing
+       (btonhelp start (/ (+ (- end 1) start) 2))
+       (btonhelp (+ 1 (/ (+ (- end 1) start) 2)) end)
+       )
+      )
+  )
+
+(check-expect (sum-thing (build-thing-or-number 2)) 3)
+(check-expect (sum-thing (build-thing-or-number 4)) 10)
+
+  
