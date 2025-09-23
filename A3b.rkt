@@ -20,3 +20,91 @@
 
 (check-expect (tree-similar? (make-node (make-node 1 2) 2) (make-node (make-node 1 2) 2)) true)
 (check-expect (tree-similar? (make-node (make-node 1 2) 2) (make-node 1 2)) false)
+
+
+(check-expect (tree-similar? (tree-create 2) (tree-create-c 2)) false)
+(check-expect (tree-similar? (tree-create 3) (tree-create-d 3)) false)
+
+;; change numbers to (make-node empty empty)
+
+;; b
+(define (tree-create n)
+  (if (= n 1) (make-node empty empty)
+      (make-node (tree-create (- n 1)) n)
+  )
+  )
+;; c
+(define (tree-create-c n)
+  (if (= n 1) (make-node empty empty)
+      (make-node n (tree-create-c (- n 1)))
+  )
+  )
+;; d
+(define (tree-create-d n)
+  (if (= n 1) (make-node empty empty)
+      (make-node n (tree-create (- n 1)))
+  )
+  )
+
+(check-expect (tree-similar? (tree-create 1) (tree-create-c 1)) true)
+(check-expect (tree-similar? (tree-create 2) (tree-create-d 2)) false)
+
+(tree-create 3)
+(tree-create-c 3)
+(tree-create-d 3)
+
+;; e
+(check-expect (tree-count 1) 1)
+(check-expect (tree-count 2) 2)
+
+
+
+(define (tree-count n)
+  (if (< n 1) 0
+  (t-cycle 0 (- n 1) 0)
+  )
+  )
+
+(check-expect (tree-count 3) 6)
+(check-expect (tree-count 4) 18)
+
+#|
+(define (t-help n accum)
+  (cond
+    [(= n 1) (+ accum 1)]
+      (t-cycle 0 (- n 1) accum)
+      )
+  )
+|#
+
+(define (t-cycle at max count)
+  (cond
+    [(> at max) count]
+    [(and (= 0 at) (= 0 max)) 1]
+    [else (+
+           (t-cycle (add1 at) max count)
+           (t-cycle 0 (sub1 at) count)
+           (t-cycle 0 (- max at 1) count)
+           )]
+    )
+  )
+
+(check-expect (tree-count 2) 2)
+
+
+
+(check-expect (ismax 7) true)
+(check-expect (ismax 1) true)
+(check-expect (ismax 14) false)
+
+(define (ismax n)
+  (istwo (+ n 1))
+  )
+
+(define (istwo n)
+  (cond
+    [(= n 1) true]
+    [(= (remainder n 2) 1) false]
+    [else (istwo (/ n 2))]
+    )
+  )
