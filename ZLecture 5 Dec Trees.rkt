@@ -46,3 +46,36 @@
         15
         
         )
+
+(define (insert t e)
+  (cond
+    [(empty? t) (make-bst e empty empty)]
+    [(> e (bst-key t)) (make-bst (bst-key t) (bst-l t) (insert (bst-r t) e))]
+    [(< e (bst-key t)) (make-bst (bst-key t) (insert (bst-l t) e)  (bst-r t))]
+    [else t]
+    )
+  )
+
+(insert 
+        (make-bst 16
+                  (make-bst 8
+                            (make-bst 4 empty empty)
+                            (make-bst 12 empty empty))
+                  (make-bst 24
+                            (make-bst 20 empty empty)
+                            (make-bst 28 empty empty))
+                  )
+        15
+
+        
+        )
+
+(define (delete t d)
+  (cond
+    [(empty? t) empty]
+    [(> d (bst-key t)) (make-bst (bst-key t) (bst-l t) (delete (bst-r t) d))]
+    [(< d (bst-key t)) (make-bst (bst-key t) (delete (bst-l t) d)  (bst-r t))]
+    [(> d (bst-key t)) (make-bst (bst-key t) (bst-l t) (delete (bst-r t) d))]
+    [(> d (bst-key t)) (make-bst (bst-key t) (bst-l t) (delete (bst-r t) d))]
+    )
+  )
