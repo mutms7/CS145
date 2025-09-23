@@ -56,14 +56,14 @@
 (check-expect (tree-count -1110) 0)
 (check-expect (tree-count 1) 1)
 (check-expect (tree-count 2) 2)
-(check-expect (tree-count 3) 6)
-(check-expect (tree-count 4) 18)
+(check-expect (tree-count 3) 5)
+(check-expect (tree-count 4) 14)
 
 
 (define (tree-count n)
   (cond [(< n 0) 0]
         [(= n 0) 1]
-  (t-cycle 0 (- n 1) 0)
+  [else (t-cycle 0 (- n 1) 0)]
   )
   )
 
@@ -80,6 +80,12 @@
   )
 
 (check-expect (tree-count 2) 2)
+
+
+
+(tree-count 3)
+
+
 
 
 
