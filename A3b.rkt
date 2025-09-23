@@ -58,6 +58,9 @@
 (check-expect (tree-count 2) 2)
 (check-expect (tree-count 3) 5)
 (check-expect (tree-count 4) 14)
+(check-expect (tree-count 5) 42)
+(check-expect (tree-count 6) 142)
+
 
 
 (define (tree-count n)
