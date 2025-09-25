@@ -84,7 +84,7 @@
   )
 
 ;; j
-#|
+
 (check-expect (tree-count-min 1) 1)
 (check-expect (tree-count-min 2) 2)
 (check-expect (tree-count-min 3) 1)
@@ -94,7 +94,7 @@
 (check-expect (tree-count-min 7) 1)
 (check-expect (tree-count-min 8) 94)
 (check-expect (tree-count-min 9) 114)
-|#
+
 
 
 (define (tree-count-min n)
@@ -117,6 +117,17 @@
 (check-expect (t-cycle 7 7 3) 1)
 |#
 
+(define (thelp n h)
+  (cond [(< n 0) 0]
+        [(= n 0) 1]
+        [else (t-cycle 0 n h)]
+        ;; n = 2: t-cycle 1 2 2
+        ;; n = 6: t-cycle 3 6 3
+        ;; n = 7: t-cycle 7 7 3
+        ;; n = 19: t-cycle 15 19 5
+        )
+  )
+
 
 (define (t-cycle at max h)
   (cond
@@ -125,8 +136,8 @@
     [(and (= max 0) (= h 1)) 1]
     [else (+
            (*
-             (tree-count-minh (sub1 at) (sub1 h))
-             (tree-count-minh (- max at) (sub1 h))
+             (thelp (sub1 at) (sub1 h))
+             (thelp (- max at) (sub1 h))
            )
            (t-cycle (add1 at) max h)
            )

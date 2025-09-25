@@ -41,8 +41,6 @@
 (define (tree-grow-min n)
   (cond
     [(empty? n) (make-node empty empty)]
-    [(empty? (node-left n)) (make-node (make-node empty empty) (node-right n))]
-    [(empty? (node-right n)) (make-node (node-left n) (make-node empty empty))]
     [(> (tree-size (node-left n)) (tree-size (node-right n)))
        (make-node
         (node-left n)
@@ -70,24 +68,33 @@
 
 
 
+(define (tree-height n)
+  (if (empty? n) 0
+      (+ 1 (max (tree-height (node-left n))
+                (tree-height (node-right n))
+                )
+         )
+      
+  )
+  )
 
 (define (tree-shrink-min n)
   (cond
-    [(empty? n) (make-node empty empty)]
-    [(empty? (node-left n)) (make-node (make-node empty empty) (node-right n))]
-    [(empty? (node-right n)) (make-node (node-left n) (make-node empty empty))]
-    [(> (tree-size (node-left n)) (tree-size (node-right n)))
-       (make-node
-        (node-left n)
-        (tree-grow-min
-         (node-right n)))
-       ]
-    [else
+    [(empty? n) empty]
+    [(and (empty? (node-right n)) (empty? (node-left n))) empty]
+    [(> (tree-height (node-left n)) (tree-height (node-right n)))
      (make-node
-        (tree-grow-min
+        (tree-shrink-min
          (node-left n))
         (node-right n)
         )
+     
+       ]
+    [else
+     (make-node
+        (node-left n)
+        (tree-shrink-min
+         (node-right n)))
        ]
     )
   )
