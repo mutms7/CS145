@@ -1,0 +1,51 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname A4b) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+(define-struct node (left right key))
+#|
+(define (tree-grow-min n)
+  (cond
+    [(empty? n) (make-node empty empty)]
+    [(> (tree-size (node-left n)) (tree-size (node-right n)))
+       (make-node
+        (node-left n)
+        (tree-grow-min
+         (node-right n)))
+       ]
+    [else
+     (make-node
+        (tree-grow-min
+         (node-left n))
+        (node-right n)
+        )
+       ]
+    )
+  )
+|#
+
+(define (size h)
+  (cond [(empty? h) 0]
+        [else
+         (+ 1
+            (size (node-l h))
+            (size (node-r h))
+            )
+         ]
+        )
+  )
+
+;;(check-expect (bst (make-node (empty empty 0)) 0)
+
+(define (insert-bst t n)
+  (cond [(empty? t) (make-node empty empty n)]
+        [(> n (node-key t))
+         (make-node (node-right t) (insert-bst (node-left t) n) (node-key t))
+         ]
+        [(< n (node-key n))
+         (make-node (insert-bst (node-right t) n) (node-left t)  (node-key t))
+         ]
+        [else
+         (make-node (node-right t) (node-left t)  (node-key t))
+         ]
+        )
+  )
