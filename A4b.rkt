@@ -116,3 +116,20 @@
 
 
 ;; 3
+
+
+
+
+(define (combine-bst t a)
+  (cond [(empty? t) (make-node empty empty n)]
+        [(> n (node-key t))
+         (make-node (node-left t) (insert-bst (node-right t) n) (node-key t))
+         ]
+        [(< n (node-key t))
+         (make-node (insert-bst (node-left t) n) (node-right t)  (node-key t))
+         ]
+        [else
+         (make-node (node-left t) (node-right t)  (node-key t))
+         ]
+        )
+  )
