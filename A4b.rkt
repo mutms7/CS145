@@ -120,7 +120,7 @@
 
 
 
-(define (combine-bst t a)
+(define (combine-bst t n)
   (cond [(empty? t) (make-node empty empty n)]
         [(> n (node-key t))
          (make-node (node-left t) (insert-bst (node-right t) n) (node-key t))
