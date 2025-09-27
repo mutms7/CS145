@@ -116,31 +116,3 @@
 
 
 ;; 3
-(check-expect (tree-count -1110) 0)
-(check-expect (tree-count 1) 1)
-(check-expect (tree-count 2) 2)
-(check-expect (tree-count 3) 5)
-
-
-(define (tree-count n)
-  (cond [(< n 0) 0]
-        [(= n 0) 1]
-        [else (t-cycle 0 (- n 1))]
-        )
-  )
-
-(define (t-cycle at max)
-  (cond
-    [(> at max) 0]
-    [else (+ (t-cycle (add1 at) max)
-             (*
-              (tree-count at)
-              (tree-count (- max at))
-              )
-             )]
-    )
-  )
-
-(check-expect (tree-count 4) 14)
-(check-expect (tree-count 5) 42)
-(check-expect (tree-count 6) 132)
