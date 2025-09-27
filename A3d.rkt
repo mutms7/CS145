@@ -24,6 +24,25 @@
   )
 
 
+
+(define (full-tree n)
+  (fthelp empty (ftheight n 0))
+  )
+
+(define (fthelp t h) ;; 
+  (cond
+    [(= h 0) t]
+    [else (fthelp (make-node t t) (sub1 h))]
+  )
+)
+
+(define (ftheight n accum) ;; 1 = 1 ;; 8 4 2 1
+  (cond
+    [(= n 1) accum]
+    [else (ftheight (/ n 2) (+ 1 accum))]
+    )
+  )
+
 (define (tree-size t)
   (if (empty? t) 0 (+ 1 (tree-size (node-left t)) (tree-size (node-right t))
                       )
@@ -90,7 +109,7 @@
   (cond
     [(empty? n) empty]
     [(and (empty? (node-right n)) (empty? (node-left n))) empty]
-    [(istwo (tree-size n)) (tree-create-min (sub1 (tree-size n)))]
+    [(istwo (tree-size n)) (full-tree (tree-size n))]
     [(empty? (node-right n))
      (make-node
         (tree-shrink-min
