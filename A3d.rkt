@@ -61,10 +61,10 @@
 ;; b
 
 (check-expect (tree-similar? (tree-shrink-min (tree-create-min 1)) (tree-create-min 0)) true)
-(check-expect (tree-similar? (tree-shrink-min (tree-create-min 1)) (tree-create-min 0)) true)
-(check-expect (tree-similar? (tree-shrink-min (tree-create-min 1)) (tree-create-min 0)) true)
-(check-expect (tree-similar? (tree-shrink-min (tree-create-min 1)) (tree-create-min 0)) true)
-(check-expect (tree-similar? (tree-shrink-min (tree-create-min 1)) (tree-create-min 0)) true)
+(check-expect (tree-similar? (tree-shrink-min (tree-create-min 4)) (tree-create-min 3)) true)
+(check-expect (tree-similar? (tree-shrink-min (tree-create-min 8)) (tree-create-min 7)) true)
+(check-expect (tree-similar? (tree-shrink-min (tree-create-min 2)) (tree-create-min 1)) true)
+(check-expect (tree-similar? (tree-shrink-min (tree-create-min 16)) (tree-create-min 15)) true)
 
 
 
@@ -78,7 +78,45 @@
   )
   )
 
+(define (istwo n)
+  (cond
+    [(= n 1) true]
+    [(= (remainder n 2) 1) false]
+    [else (istwo (/ n 2))]
+    )
+  )
+
 (define (tree-shrink-min n)
+  (cond
+    [(empty? n) empty]
+    [(and (empty? (node-right n)) (empty? (node-left n))) empty]
+    [(istwo (tree-size n)) (tree-create-min (sub1 (tree-size n)))]
+    [(empty? (node-right n))
+     (make-node
+        (tree-shrink-min
+         (node-left n))
+        (node-right n)
+        )
+     
+       ]
+    [(empty? (node-left n))
+     (make-node
+      (node-left n)
+      (tree-shrink-min
+         (node-right n))
+        
+        )
+       ]
+    [else
+     (make-node
+        (node-left n)
+        (tree-shrink-min
+         (node-right n)))
+       ]
+    )
+  )
+#|
+(define (tree-shrink-mink n)
   (cond
     [(empty? n) empty]
     [(and (empty? (node-right n)) (empty? (node-left n))) empty]
@@ -98,3 +136,4 @@
        ]
     )
   )
+|#
