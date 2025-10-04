@@ -68,8 +68,8 @@
   (cond [(empty? h) 0]
         [else
          (+ 1
-            (max (size (node-left h))
-            (size (node-right h)))
+            (max (height (node-left h))
+            (height (node-right h)))
             )
          ]
         )

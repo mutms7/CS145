@@ -1,0 +1,150 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-beginner-abbr-reader.ss" "lang")((modname A5c) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+(define-struct node (left right key))
+   ;; A BST is either:
+   ;;  * empty, or 
+   ;;  * (make-node BST BST Int) such that:
+   ;;       - all the keys in left are less than key
+   ;;       - all the keys in right are greater than key
+   ;;       - left and right are both BSTs
+
+;; maxbst: BST -> nat
+(define (maxbst t)
+  (cond
+    
+    [(empty? (node-right t)) (node-key t)]
+    [else (maxbst (node-right t))]
+  )
+  )
+
+;; minbst: BST -> nat
+(define (minbst t)
+  (cond
+    
+    [(empty? (node-left t)) (node-key t)]
+    [else (minbst (node-left t))]
+  )
+  )
+
+;;1
+(check-expect (bst? 'hello) false)
+(check-expect (bst? (make-node (make-node empty empty 1) (make-node empty empty 10) 5)) true)
+(check-expect (bst? (make-node (make-node empty empty 10) (make-node empty empty 1) 5)) false)
+(check-expect (bst? empty) true)
+
+
+;; bst? any -> bool
+(define (bst? t)
+  (cond
+    [(empty? t) true]
+    [(not (node? t)) false]
+    [(and (empty? (node-left t)) (empty? (node-right t))) true]
+    [(empty? (node-left t)) (and (< (node-key t) (minbst (node-right t))) (bst? (node-right t)))]
+    [(empty? (node-right t)) (and (> (node-key t) (maxbst (node-left t))) (bst? (node-left t)))]
+    [else (and (> (node-key t) (maxbst (node-left t))) (bst? (node-left t)) (< (node-key t) (minbst (node-right t))) (bst? (node-right t)))]
+  )
+  )
+
+(check-expect (bst? (make-node (make-node '() (make-node '() '() 12) 10) (make-node (make-node (make-node '() '() 16) '() 17) '() 20) 15)) true)
+(check-expect (bst? (make-node (make-node '() (make-node '() '() 12) 10) (make-node (make-node (make-node '() '() 16) '() 17) '() 20) 18)) false)
+
+;; 2
+(check-expect (full? (make-node (make-node '() '() 5) (make-node '() '() 15) 10)) true)
+(check-expect (full? (make-node '() '() 10)) true)
+(check-expect (full? empty) true)
+
+
+;; full? bst -> bool
+(define (full? t)
+  (cond
+    [(empty? t) true]
+    [(and (empty? (node-left t)) (empty? (node-right t))) true]
+    [(empty? (node-left t)) false]
+    [(empty? (node-right t)) false]
+    [else (and (full? (node-left t)) (full? (node-right t)))]
+  )
+  )
+
+(check-expect (full? (make-node (make-node '() '() 5) (make-node '() (make-node '() '() 12) 15) 10)) false)
+(check-expect (full? (make-node (make-node '() '() 9) '() 10)) false)
+(check-expect (full? (make-node (make-node '() '() 5) (make-node (make-node '() '() 12) (make-node '() '() 16) 15) 10)) true)
+(check-expect (full? (make-node (make-node '() '() 5) (make-node (make-node (make-node '() '() 11) '() 12) (make-node '() '() 16) 15) 10)) false)
+
+
+
+;; height: bst -> nat
+(define (height h)
+  (cond [(empty? h) 0]
+        [else
+         (+ 1
+            (max (height (node-left h))
+            (height (node-right h)))
+            )
+         ]
+        )
+  )
+
+;; 3
+(check-expect (perfect? (make-node (make-node '() '() 5) (make-node '() '() 15) 10)) true)
+(check-expect (height (make-node (make-node '() '() 5) (make-node '() '() 15) 10)) 2)
+
+(check-expect (perfect? (make-node '() '() 10)) true)
+(check-expect (perfect? empty) true)
+
+
+;; perfect? bst -> bool
+(define (perfect? t)
+  (perfecth? t (height t))
+  )
+
+;; perfecth? bst nat -> bool
+(define (perfecth? t h)
+  (cond
+    [(and (empty? t) (= h 0)) true]
+    [(and (empty? (node-left t)) (empty? (node-right t)) (= h 1)) true]
+    [(empty? (node-left t)) false]
+    [(empty? (node-right t)) false]
+    [(not (= (height (node-left t)) (height (node-right t)))) false]
+    [else (and (perfecth? (node-left t) (sub1 h)) (perfecth? (node-right t) (sub1 h)))]
+  )
+  )
+
+(check-expect (perfect? (make-node (make-node '() '() 5) (make-node '() (make-node '() '() 12) 15) 10)) false)
+(check-expect (height (make-node (make-node '() '() 5) (make-node '() (make-node '() '() 12) 15) 10)) 3)
+(check-expect (perfect? (make-node (make-node '() '() 9) '() 10)) false)
+(check-expect (perfect? (make-node (make-node '() '() 5) (make-node (make-node '() '() 12) (make-node '() '() 16) 15) 10)) false)
+
+
+;; size: bst -> nat
+(define (size h)
+  (cond [(empty? h) 0]
+        [else
+         (+ 1
+            (size (node-left h))
+            (size (node-right h))
+            )
+         ]
+        )
+  )
+
+;; 4
+(check-expect (balanced? (make-node '() (make-node '() '() 15) 10)) true)
+(check-expect (balanced? (make-node '() '() 10)) true)
+(check-expect (balanced? empty) true)
+
+
+;; balanced? bst -> bool
+(define (balanced? t)
+  (cond
+    [(empty? t) true]
+    [else (and
+           (balanced? (node-left t))
+           (balanced? (node-right t))
+           (> 2 (abs (- (size (node-left t)) (size (node-right t)))))
+           )]
+  )
+  )
+
+(check-expect (balanced? (make-node (make-node (make-node '() '() 2) (make-node '() '() 7) 5) (make-node '() (make-node '() '() 12) 15) 10)) true)
+(check-expect (balanced? (make-node (make-node (make-node '() '() 8) '() 9) '() 10)) false)
