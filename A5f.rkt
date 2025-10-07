@@ -93,15 +93,15 @@
 
 
 
-(check-expect (rand->balanced (list 10 5 1)) (make-node (make-node empty empty 1) (make-node empty empty 10) 5))
-(check-expect (rand->balanced empty) empty)
+(check-expect (rand->bst (list 10 5 1)) (make-node (make-node empty empty 1) (make-node empty empty 10) 5))
+(check-expect (rand->bst empty) empty)
 
-;; rand->balanced: list -> bst
-(define (rand->balanced lst)
+;; rand->bst: list -> bst
+(define (rand->bst lst)
   (list->balanced (mergesort lst))
   )
 
-(check-expect (rand->balanced (list 16 17 20 10 12 15 )) (make-node
+(check-expect (rand->bst (list 16 17 20 10 12 15 )) (make-node
  (make-node
   '()
   (make-node '() '() 12)
@@ -111,7 +111,7 @@
   (make-node '() '() 20)
   17)
  15))
-(check-expect (rand->balanced (list 10 11 12 13 14)) (make-node
+(check-expect (rand->bst (list 10 11 12 13 14)) (make-node
  (make-node
   '()
   (make-node '() '() 11)
