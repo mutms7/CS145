@@ -1,0 +1,8 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname |ZLecture 9 Lambda|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+(define (double x) (+ x x))
+(define double2 (lambda (x) (+ x x)))
+(map (lambda (x) (+ x x)) (list -1 2 3))
+(define (make-adder n) (lambda (x) (+ x n)))
+(define make-adder2 (lambda (n) (lambda (x) (+ x n))))
