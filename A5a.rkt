@@ -15,8 +15,8 @@
 (check-expect (take (list 1 2 3 4 5 6) 3) (list 1 2 3))
 (check-expect (take (list 1 2 3 4 5 6) 6) (list 1 2 3 4 5 6))
 
-
 (define (take lst n)
+  
   (cond
     [(= n 0) empty]
     [(empty? lst) empty]
