@@ -1,0 +1,31 @@
+#lang racket
+  (provide c x0 findx)
+
+  (define c 1)
+  (define x0 1)
+
+;; f(x) = x, g(x) = 2x
+
+  ;; 
+  ;; start with a true inequality, and maintain
+  ;;    x <= 2x [for all x >= 1]
+  ;;    f(x) <= 1*g(x) [for all x ≥ 1]
+
+  ;; Therefore, (findx 1 1) must produce impossible,
+  ;; and f(x) is O(g(x))
+
+  (define (findx c x0)
+    (cond
+      [(< c 1/2) x0]
+      [else 'impossible]))
+#|
+f(x) = x, g(x) = 2x
+x = (1/2)(2x)
+f(x) = 1/2*g(x)
+Consider f(x) <= c*g(x)
+1/2*g(x) <= c*g(x)
+c >= 1/2
+Therefore, if c >= 1/2, f(x) <= c*g(x) for all x
+if c < 1/2, f(x) > c*g(x) for all x
+
+|#
