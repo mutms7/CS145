@@ -1,36 +1,34 @@
 #lang racket
+
   (provide c x0 findx)
 
-  (define c 1/100)
-  (define x0 1)
+  (define c 'none)
+  (define x0 'none)
 
-;; f(x)=x, g(x)=100*floor(x/10)
+ ;; we need to show f(x) ≤ c*g(x) for all x ≥ x0
+  ;;   that is, there does not exist x >= x0 such that
+  ;;   f(x) > c*g(x)
 
   ;; 
   ;; start with a true inequality, and maintain
-#|
-x = x
-x = 1/100 (100x)
-for all x >= 1,
-x/100 < floor(x/10)
-Therefore,
-x < 1/100 (100 (x/100)) < 1/100 (100*floor(x/10))
-f(x) < 1/100 * x < 1/100 g(x) [for all x >= 1]
-f(x) < 1/100 * g(x) [for all x >= 1]
-
-Therefore, (findx 1/100 1) must produce impossible,
-and f(x) is O(g(x))
-|#
+  ;;    x > sqrt(x)   [for all x >= 2]
+  ;;    Prove that for all c > 0, there exists x >= x0 such that
+;; f(x) > c*g(x)
+;; x = sqrt(x)*sqrt(x)
+;; for sufficiently large x,
+;;  c < sqrt(x)
+;; Therefore x > c*sqrt(x)
+;; Therefore there are no c and x0 that produce impossible
 
 
   (define (findx c x0)
-    (cond
-      [(> x0 (* 100 c (floor (/ x 10)))) x0]
-      [else 'impossible]))
+    (max (+ 1 (expt c 2)) x0))
 
 #|
 f(x) > c*g(x)
-x > c*(100*floor(x/10)) > c*(100*(x-10)/10)
+x > c*sqrt(x)
+sqrt(x) > c
+x > c^2
 
 
 
