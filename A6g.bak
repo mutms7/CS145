@@ -1,0 +1,63 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname A6g) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+;; 1
+
+(check-expect (map2argfn (list + - * / list) (list 3 2))
+              (list 5 1 6 1.5 (list 3 2)))
+(check-expect (map2argfn empty (list 1 0))
+              empty)
+
+;;map2argfn: (listof (Num Num -> X)) (listof Num) -> (listof X)
+(define (map2argfn fns two)
+  (cond
+    [(empty? fns) empty]
+    [else (cons ((lambda (fn n1 n2) (fn n1 n2)) (first fns) (first two) (first (rest two))) (map2argfn (rest fns) two))]
+  )
+  )
+
+
+
+
+
+
+
+;; 2
+
+(check-expect (intersection (list 1 'boo true 19 22) (list 22 false 'boo 'hi 19))
+              (list 'boo 19 22))
+(check-expect (intersection (list 1) empty)
+              empty)
+
+
+;;intersection: (listof Any) (listof Any) -> (listof Any)
+(define (intersection l1 l2)
+  (cond
+    [(empty? l1) empty]
+    ;; foldr: (Any Bool -> Bool) Bool (listof Any) -> Bool
+    [(foldr (lambda (fir lst) (or (equal? fir (first l1)) lst)) false l2) (cons (first l1) (intersection (rest l1) l2))]
+    [else (intersection (rest l1) l2)]
+  )
+  )
+
+
+
+
+
+;; 3
+
+
+
+(check-expect (remove-duplicates (list 1 2 3 3 4 2 3 1 3))
+              (list 1 2 3 4))
+(check-expect (remove-duplicates empty)
+              empty)
+
+
+;;remove-duplicates: (listof Num) -> (listof Num)
+(define (remove-duplicates lst)
+  (cond
+    [(empty? lst) empty]
+    [else (reverse lst)]
+  )
+  )
