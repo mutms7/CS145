@@ -1,0 +1,11 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname A6f) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+(require "avl-cs145.rkt")
+  (define x (insertavl (insertavl (insertavl empty 10) 20) 30))
+   (sizeavl x)                                          ;; 3
+   (listavl x)                                          ;; (list 10 20 30)
+   (node-key x)                                         ;; one of:  10, 20, 30
+   (sizeavl (node-left x))                              ;; one of: 0, 1, 2
+   (+ (sizeavl (node-left x)) (sizeavl (node-right x))) ;; 2
+   (listavl (deleteavl x 20))                           ;; (list 10 30)
