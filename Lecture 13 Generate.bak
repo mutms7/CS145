@@ -1,0 +1,29 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname |Lecture 13 Generate|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+(define initial (list 10 0))
+(define (done? lst) (zero? (first lst)))
+(define (step lst) (list (sub1 (first lst))
+                         (+ (first lst) (second lst))))
+(define (final lst) (second lst))
+
+
+(define (sumto n acc)
+  (cond
+    [(zero? n) acc]
+    [else (sumto (sub1 n) (+ n acc))]))
+
+(define (sumto2 lst)
+  (cond
+    [(done? lst) (final lst)]
+    [else (sumto2 (step lst))]))
+
+
+(define (newsumto n)
+  (local
+    [(define initial (list n 0))
+     (define (sumto2 initial)
+       (cond
+         [(done? initial) (final initial)]
+         [else (sumto2 (step initial))]))]
+     (sumto2 initial)))

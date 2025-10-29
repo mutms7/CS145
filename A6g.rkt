@@ -29,7 +29,7 @@
               empty)
 
 
-;;intersection: (listof Any) (listof Any) -> (listof Any)
+;;intersection: (listof X) (listof X) -> (listof X)
 (define (intersection list1 list2)
   (foldr
    (lambda (firstl1 rest)
@@ -90,7 +90,7 @@
               (list 'c 'd))
 
 
-;;subseq : (listof Num) Nat Nat -> (listof Num)
+;;subseq : (listof X) Nat Nat -> (listof X)
 (define (subseq lst i j)
   
   
