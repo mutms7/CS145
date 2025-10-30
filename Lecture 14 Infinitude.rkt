@@ -1,6 +1,18 @@
-;; The first three lines of this file were inserted by DrRacket. They record metadata
-;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname |Lecture 14 Infinitude|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+#lang racket
+
+(require "stream.rkt")
+
+(provide fibseq fibfirst fibrest)
+
 (define (my-if test true-part false-part)
   (if test (true-part) (false-part)))
 
+(define (why?) ((λ(x) (x x)) (λ(x) (x x))))
+
+
+(define fibseq
+  (stream-generate
+   (make-f 0 1)
+   (λ(state) false)
+   (λ(state) (make-f (f-nxt state) (+ (f-cur state) f-nxt state)))
+   (λ(state) (f-cur state))))
