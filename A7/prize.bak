@@ -1,0 +1,26 @@
+#lang racket
+
+(require "scratchandwin.rkt")
+
+(provide collect-prize)
+
+(define (collect-prize cardlist)
+  (cond
+    [(empty? cardlist) 'prize]
+    [(not (list? cardlist)) 'fraud]
+    [(equal? (scratch (first cardlist)) 'fraud) 'fraud]
+    [(not (= (length cardlist) (second (scratch (first cardlist))))) 'fraud]
+    [else (collect-prize1 cardlist)]
+    )
+  )
+
+(define (collect-prize1 cardlist)
+  (cond
+    [(empty? cardlist) 'prize]
+    [(equal? (scratch (first cardlist)) 'fraud) 'fraud]
+    [(not (empty? (filter (λ(card) (and (equal? (first (scratch (first cardlist))) (scratch card))
+                                   (equal? (first (scratch (first cardlist))) (scratch card))))
+                     (rest cardlist)))) 'fraud]
+    [else collect-prize1 (rest cardlist)]
+    )
+  )

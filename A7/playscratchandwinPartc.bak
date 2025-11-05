@@ -1,0 +1,35 @@
+#lang racket
+(require "scratchandwin.rkt")
+(require "avl-cs145.rkt")
+
+
+(provide playgame)
+
+;;playgame: Nat -> (listof crd)
+(define (playgame n)
+  (remove-duplicates (playgamehelp n)))
+
+;;remove-duplicates: (listof crd) -> (listof crd)
+(define (remove-duplicates lst)
+  (reverse
+   ((lambda (reversed) 
+   (foldr
+   (lambda (firstl1 rest)
+  (cond
+    [(foldr (lambda (fir lst) (or (equal? (first (scratch fir)) (first (scratch firstl1))) lst)) false rest) rest]
+    [else (cons firstl1 rest)]
+  )
+     )
+  empty
+  reversed)
+      ) (reverse lst)))
+  )
+
+;;playgamehelp: Nat avl -> (listof crd)
+(define (playgamehelp n av)
+  (cond [(empty? av) empty]
+        [else
+         (local [(define crd (drawcard n))]
+         (cons crd (playgamehelp n (deleteavl av (first (scratch crd))))))]))
+
+

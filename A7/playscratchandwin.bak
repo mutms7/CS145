@@ -1,0 +1,7 @@
+#lang racket
+(require "scratchandwin.rkt")
+(require "prize.rkt")
+
+(provide playgame)
+
+(define (playgame n)
