@@ -1,20 +1,23 @@
 #lang racket
+
 (require "scratchandwin.rkt")
-
-
+(require "avl-cs145.rkt")
 
 (provide playgame)
 
-;; 
+;;playgame: Nat -> (listof crd)
 (define (playgame n)
-  (playgamehelp n empty n)
+  (playgamehelp n empty empty)
   )
 
-(define (playgamehelp n lstsofar total)
-  (local [(define cd (drawcard n))]
-  (cond [(= total 0) lstsofar]
-        [(not (foldr (λ(c rest) (or (= (first (scratch c)) (first (scratch cd))) rest)) false lstsofar)) (playgamehelp n (cons cd lstsofar) (sub1 total))]
-        [else (playgamehelp n lstsofar total)]
-        )))
-
-  
+;;playgamehelp: Nat avl (listof crd) -> (listof crd)
+(define (playgamehelp n avl result)
+  (local [(define cd (drawcard n))
+          (define a (insertavl avl (first (scratch cd))))]
+  (cond
+    [(= (sizeavl avl) n) result]
+    [(= (sizeavl a) (sizeavl avl)) (playgamehelp n a result)]
+    [else (playgamehelp n a (cons cd result))]
+    )
+    )
+  )
