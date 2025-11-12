@@ -1,0 +1,28 @@
+#lang racket
+
+(require "generate.rkt")
+
+(define (prime? n)
+  (generate
+   (list 2 n)
+   (λ(x) (or
+           (< (second x) 2)
+           (= 0 (modulo (first x) (second x)))
+           (> (first x) (sqrt (second x)))))
+   (λ(x) (list (+ 1 (first x)) (second x)))
+   (λ(x) (cond
+           [(< (second x) 2) false]
+           [(= 0 (modulo (first x) (second x))) false]
+           [(> (first x) (sqrt (second x))) true]))
+   ))
+
+(define (my-build-list n f)
+  (generate
+   (list (sub1 n) f empty)
+   (λ(x) (= (first x) -1))
+   (λ(x) (list
+          (sub1 (first x))
+          (second x)
+          (cons ((second x) (first x)) (third x))))
+   (λ(x) (third x))
+   ))
