@@ -85,4 +85,22 @@
                      True))))))
  
 
-;;Y = (λf.((λx.(f x x)) (λx.(f x x))))
+;; Y = (λf.((λx.(f (x x))) (λx.(f (x x)))))
+;; Y g = (λf.((λx.(f (x x))) (λx.(f (x x))))) g
+;; =B> (λx.(g (x x))) (λx.(g (x x)))
+;; =B> g (λx.(g (x x))) (λx.(g (x x)))
+;; = g (Y g)
+
+
+;;Numbers:
+;; 0 = λf.λx.x
+;; 1 = λf.λx.(f x)
+;; 2 = λf.λx.(f (f x))
+
+;; succ = λn.λf.λx.(n f x)
+;; i.e. add1 in Racket
+;; plus m n = m + n = f^(m+n) = f^m*f^n
+;; = λm.λn.λf.λx.(m f (n f x))
+
+
+;;Unary Lists:
