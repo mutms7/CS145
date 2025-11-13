@@ -49,17 +49,26 @@
                     True
                     (If (First lst) ((self self) (Rest lst)) False))))))
 
+(define Or-curry-no-helper
+  ((λ(self) (λ (lst)  (If (Empty? lst)
+                    False
+                    (If (First lst) ((self self) (Rest lst)) True))))
+   (λ(self) (λ (lst)  (If (Empty? lst)
+                    False
+                    (If (First lst) ((self self) (Rest lst)) True))))))
+
 ;;
 
 ;; abstract away the And
 (define Abstract-curry-no-helper
-  (λ(f)
-    ((λ(self) (f (self self)))
+  (λ(f) ;;takes a function
+    ((λ(self) (f (self self))) ;;makes a curry with that function
      (λ(self) (f (self self))))))
 
 (define And-abstracted
-  (Abstract-curry-no-helper
-   (λ(And-lst)
+  (Abstract-curry-no-helper ;; expects a function
+   ;; calls a function that does a thing
+   (λ(And-lst) ;; the argument is a function, that is applied into itself NOT RECURSION
      (λ(lst) (If (Empty? lst)
                  True
                  (If (First lst)
