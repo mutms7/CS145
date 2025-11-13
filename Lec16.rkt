@@ -74,4 +74,15 @@
                  (If (First lst)
                      (And-lst (Rest lst))
                      False))))))
-                 
+
+(define Or-abstracted
+  (Abstract-curry-no-helper 
+   (λ(Or-lst) 
+     (λ(lst) (If (Empty? lst)
+                 False
+                 (If (First lst)
+                     (Or-lst (Rest lst))
+                     True))))))
+ 
+
+;;Y = (λf.((λx.(f x x)) (λx.(f x x))))
