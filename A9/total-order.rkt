@@ -16,16 +16,16 @@
 
 ;; For this example, we use a number hidden in a struct
 
-   (define-struct to-rep (hidden count))
-   (define (to-unhide x) x)
-   (define (to-hide x) x)
+   (define-struct to-rep (hidden))
+   (define (to-unhide x) (to-rep-hidden x))
+   (define (to-hide x) (make-to-rep x))
 
 ;; membership predicate
 
-   (define (to? x) true)
+   (define (to? x) (and (to-rep? x) (number? (to-rep-hidden x))))
 
 ;; defining relation must be total, reflexive, transitive
-   (define (to<= a b) (<= (first a) (first b)))
+   (define (to<= a b) (<= (to-rep-hidden a) (to-rep-hidden b)))
 
 ;; derived relations
    (define (to> a b) (not (to<= a b)))
@@ -37,14 +37,14 @@
 ;; min/max functions and identities
    
    (define (to-min a b) (if (to< a b) a b))
-   (define to-min-ident (list +inf.0 0))
+   (define to-min-ident (make-to-rep +inf.0))
 
    (define (to-max a b) (if (to< a b) b a))
-   (define to-max-ident (list -inf.0 0))
+   (define to-max-ident (make-to-rep -inf.0))
 
 ;; user-defined associative operator and identity
 
 ;; for this example we just add the secret numbers
 
-   (define (to-op a b) (list 0 (+ (second a) (second b))))
-   (define to-op-ident (list 0 0))
+   (define (to-op a b) (to-hide (+ (to-rep-hidden a) (to-rep-hidden b))))
+   (define to-op-ident (to-hide 0))
