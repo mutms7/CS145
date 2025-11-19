@@ -46,5 +46,5 @@
 
 ;; for this example we just add the secret numbers
 
-   (define (to-op a b) (second a))
-   (define to-op-ident 0)
+   (define (to-op a b) (list 0 (+ (second a) (second b))))
+   (define to-op-ident (list 0 0))

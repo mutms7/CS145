@@ -9,27 +9,41 @@
   (os-difference (os-union s t) (os-intersection s t)))
 
 (define (count s)
-  (stream-generate (list s os-empty)
-                   (λ(x) true)
-                   (λ(x) (list (stream-rest s)
+  (stream-generate (list s empty)
+                   (λ(x) (empty? x))
+                   (λ(x)
                      (local
                        [(define str (first x))
                         (define avl (second x))
                         ]
                      (if (os-member (os-singleton (list (stream-first str) 0)) avl)
-                         (os-intersection (os-singleton (list (stream-first str)
+                         (list (stream-rest s)
+                     (os-intersection (os-singleton (list (stream-first str)
                                                 (os-op (os-d
                                  (os-d
                                   avl
                                   (os-singleton (list (stream-first str) 0)))
                                  avl))))
-                                          (os-d avl (os-singleton (list (stream-first str) 0))))
-                         (os-intersection (os-singleton (list (stream-first str) 0)) avl)
+                                          (os-d avl (os-singleton (list (stream-first str) 0)))))
+                         (list (stream-rest s)
+                     (os-intersection (os-singleton (list (stream-first str) 0)) avl))
                        )
-                       )))
-                   (λ(x) (second (os-d
+                       )
+
+                     )
+                   (λ(x) (list (stream-first (first x)) (second (os-op (os-d
                                  (os-d
                                   (second x)
                                   (os-singleton (list (stream-first (first x)) 0)))
-                                 (second x))))
+                                 (second x))))))
                    ))
+
+(define x (list (list->stream '(3 9 3 4 9 3 7)) empty))
+
+
+
+(list (stream-first (first x)) (second (os-op (os-d
+                                 (os-d
+                                  (second x)
+                                  (os-singleton (list (stream-first (first x)) 0)))
+                                 (second x)))))
