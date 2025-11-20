@@ -16,35 +16,53 @@
 
 ;; For this example, we use a number hidden in a struct
 
-   (define-struct to-rep (hidden))
-   (define (to-unhide x) (to-rep-hidden x))
-   (define (to-hide x) (make-to-rep x))
+(define-struct to-rep (name hidden))
+(define (to-unhide x) (list (to-rep-hidden x) (to-rep-name x)))
+(define (to-hide x) (make-to-rep (first x) (second x)))
 
 ;; membership predicate
 
-   (define (to? x) (and (to-rep? x) (number? (to-rep-hidden x))))
+(define (to? x) (not (empty? x)))
 
-;; defining relation must be total, reflexive, transitive
-   (define (to<= a b) (<= (to-rep-hidden a) (to-rep-hidden b)))
+
+(define (to<= a b)
+  (cond 
+    [(not (string-ci=? (first a) (first b)))
+     (string-ci<=? (first a) (first b))]
+    [(and (= (second a) +inf.0) (not (= (second b) +inf.0)))
+     false]
+    [(and (= (second b) +inf.0) (not (= (second a) +inf.0)))
+     true]
+    [(and (= (second a) -inf.0) (not (= (second b) -inf.0)))
+     true]
+    [(and (= (second b) -inf.0) (not (= (second a) -inf.0)))
+     false]
+    [else (<= (second a) (second b))]))
+
 
 ;; derived relations
-   (define (to> a b) (not (to<= a b)))
-   (define (to= a b) (and (to<= a b) (to<= b a)))
-   (define (to>= a b) (to<= b a))
-   (define (to< a b) (to> b a))
-   (define (to!= a b) (not (to= a b)))
+(define (to> a b) (not (to<= a b)))
+(define (to= a b) (and (to<= a b) (to<= b a)))
+(define (to>= a b) (to<= b a))
+(define (to< a b) (to> b a))
+(define (to!= a b) (not (to= a b)))
 
 ;; min/max functions and identities
    
-   (define (to-min a b) (if (to< a b) a b))
-   (define to-min-ident (make-to-rep +inf.0))
+(define (to-min a b) (if (to< a b) a b))
+(define to-min-ident (list "~" +inf.0))
 
-   (define (to-max a b) (if (to< a b) b a))
-   (define to-max-ident (make-to-rep -inf.0))
+(define (to-max a b) (if (to< a b) b a))
+(define to-max-ident (list "0" -inf.0))
 
 ;; user-defined associative operator and identity
 
 ;; for this example we just add the secret numbers
 
-   (define (to-op a b) (to-hide (+ (to-rep-hidden a) (to-rep-hidden b))))
-   (define to-op-ident (to-hide 0))
+
+(define (to-op a b) 
+  (cond
+    [(> (second b) (second a)) b]
+    [(> (second a) (second b)) a]
+    [else (if (string-ci<=? (first a) (first b)) a b)]))
+(define to-op-ident (list "~" -inf.0))
