@@ -1,11 +1,15 @@
 #lang lazy
+(λ (one two)
+  ;; and
+((λ (test thenpart)
+    ((test thenpart) (λ (no) (λ (yes) yes))))
+  ;;or
+  ((λ (a1 a2)
+    ((a1 (λ (yes) (λ (no) yes))) a2)) one two)
 
-(define True (λ (yes) (λ (no) yes)))
-(define False (λ (yes) (λ (no) no)))
+  ;;not
+  ((λ (b1)
+    ((b1 (λ (no) (λ (yes) yes))) (λ (yes) (λ (no) yes))))
+  ((λ (c1 c2)
+    ((c1 c2) (λ (no) (λ (yes) yes)))) one two))))
 
-(define (Or a b) (If a True b))
-(define (And a b) (If a b False))
-(define (Not a) (If a False True))
-
-;; and
-(lambda(a b)((a b)(lambda(x)(lambda(y)y))))
