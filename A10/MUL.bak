@@ -1,0 +1,14 @@
+#lang lazy
+(require "Lambda.rkt")
+
+(define (MUL a b)
+
+
+
+
+
+
+
+
+
+  )

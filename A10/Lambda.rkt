@@ -23,81 +23,50 @@
  NAT    ;; convert Racket number to binary Natural
  )
 
-(define True (λ (yes) (λ (no) yes)))
-(define False (λ (yes) (λ (no) no)))
+(define True (lambda (yes) (lambda (no) yes)))
+(define False (lambda (yes) (lambda (no) no)))
 (define (True? b) ((b 'yes) 'no))
 
 (define (If test thenpart elsepart)
   ((test thenpart) elsepart))
-
-(define lIf (λ (test thenpart elsepart)
-              ((test thenpart) elsepart)))
-
-(define lOr
-  (λ (test elsepart)
-    ((test (λ (yes) (λ (no) yes))) elsepart))
-  )
-
-(define lAnd
-  (λ (test thenpart)
-    ((test thenpart) (λ (no) (λ (yes) yes))))
-  )
-
-(define lNot
-  (λ (test)
-    ((test (λ (no) (λ (yes) yes))) (λ (yes) (λ (no) yes)))))
-
-(define lXor
-  (λ (one two)
-  ;; and
-((λ (test thenpart)
-    ((test thenpart) (λ (no) (λ (yes) yes))))
-  ;;or
-  ((λ (a1 a2)
-    ((a1 (λ (yes) (λ (no) yes))) a2)) one two)
-
-  ;;not
-  ((λ (b1)
-    ((b1 (λ (no) (λ (yes) yes))) (λ (yes) (λ (no) yes))))
-  ((λ (c1 c2)
-    ((c1 c2) (λ (no) (λ (yes) yes)))) one two))))
-  )
-
 
 (define (Or a b) (If a True b))
 (define (And a b) (If a b False))
 (define (Not a) (If a False True))
 
 (define (Cons first rest)
-  (λ (selector) ((selector first) rest)))
+  (lambda (selector) ((selector first) rest)))
 
 (define (First pair) (pair True))
 (define (Rest pair) (pair False))
 
-(define Empty (λ (x) True))
+(define Empty (lambda (x) True))
 (define (Empty? lst)
-  (lst (λ (yes) (λ (no) False))))
+  (lst (lambda (yes) (lambda (no) False))))
 
 (define Y
-  (λ (f)
-    ((λ (self) (f (self self)))
-     (λ (self) (f (self self))))))
+  (lambda (f)
+    ((lambda (self) (f (self self)))
+     (lambda (self) (f (self self))))))
 
 (define Z Empty)
 (define Z? Empty?)
 
 (define (ADD1 x)
-  (If (Z? x)
-      (Cons True Z)
-      (If (First x) (Cons False (ADD1 (Rest x)))
-          (Cons True (Rest x)))))
+   (If (Z? x)
+       (Cons True Z)
+       (If (First x) (Cons False (ADD1 (Rest x)))
+           (Cons True (Rest x)))))
 
 (define (ADD a b)
   (If (Z? a) b
-      (If (Z? b) a
-          (If (Not (First a)) (Cons (First b) (ADD (Rest a) (Rest b)))
-              (If (Not (First b)) (Cons (First a) (ADD (Rest a) (Rest b)))
-                  (Cons False (ADD1 (ADD (Rest a) (Rest b)))))))))
+   (If (Z? b) a
+       ;; first a is false; first digit is first b
+    (If (Not (First a)) (Cons (First b) (ADD (Rest a) (Rest b)))
+        ;; first b is false; first digit is first a
+     (If (Not (First b)) (Cons (First a) (ADD (Rest a) (Rest b)))
+         ;; first a, first b are true, then false and add1 to rest
+       (Cons False (ADD1 (ADD (Rest a) (Rest b)))))))))
 
 (define (TAN x)
   (If (Z? x) 0
@@ -111,9 +80,9 @@
 (define (x1 n)
   (define (x2 m)
     (if (< m 0) (void)
-        (begin
-          (printf "~a ~a ~a\n" n m (TAN (ADD (NAT n) (NAT m))))
-          (x2 (sub1 m)))))
+     (begin
+       (printf "~a ~a ~a\n" n m (TAN (ADD (NAT n) (NAT m))))
+       (x2 (sub1 m)))))
   (if (< n 0) (void)
       (begin (x2 n) (x1 (sub1 n)))))
 
