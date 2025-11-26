@@ -30,3 +30,28 @@
           (Cons (First a) (makeZ (Rest a) zeros (Rest total)))
            )))
 
+;; karatsuba
+(define (halve a midlen)
+  (If (Z? a) midlen
+      (halveh (Rest a) (Cons True midlen))))
+
+(define (halveh a midlen)
+  (If (Z? a) midlen
+      (halve (Rest a) midlen)))
+
+(define (front a midlen)
+  (If (Z? midlen) Z
+     (Cons (First a) (front (Rest a) (Rest midlen)))
+           ))
+
+(define (back a midlen)
+  (If (Z? a) Z
+      (If (Z? midlen) (Cons (First a) (back (Rest a) midlen))
+          (back (Rest a) (Rest midlen)))
+           ))
+
+(define (shift a amt)
+  (If (Z? amt) a
+      (shift (Cons False a) (Rest amt))
+           ))
+
