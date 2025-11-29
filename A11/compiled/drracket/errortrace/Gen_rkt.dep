@@ -1,0 +1,1 @@
+("8.18" ta6nt ("22336f8cc5bc2b817dff461f09c9edd07422a44b" . "bcedb051d59a46b65e881e0c973431b90e76a20b") #"C:\\Users\\welco\\Downloads\\University Files\\Term A1\\CS 145\\A11\\IOStream.rkt" (collects #"drracket" #"private" #"drracket-errortrace-key.rkt") (collects #"lazy" #"lang" #"reader.rkt") (collects #"lazy" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))
