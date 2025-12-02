@@ -44,5 +44,11 @@
      (Var x)]))
 
 (define (uncurried-eval ast)
-  (lambda-interp (myparse (curry ast)))
+  (lambda-print (lambda-interp (myparse (curry ast))))
   )
+
+(define (lambda-print ast)
+  (match ast
+    [(App fst snd) (list (lambda-print fst) (lambda-print snd))]
+    [(Abs par bdy) (list 'λ (list par) (lambda-print bdy))]
+    [(Var id) id]))
